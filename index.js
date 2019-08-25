@@ -1,15 +1,3 @@
-function isPositionFixed(el) {
-  do {
-    if (getComputedStyle(el).position === 'fixed') {
-      return true;
-    }
-
-    el = el.parentNode;
-  } while (el.parentNode);
-
-  return false;
-}
-
 const NAMES = {
   size: ['height', 'width'],
   clientSize: ['clientHeight', 'clientWidth'],
@@ -22,8 +10,8 @@ const NAMES = {
   scrollOffset: ['pageYOffset', 'pageXOffset'],
 };
 
-export default function(anchor, popup, side = 'bottom', align = 'center') {
-  const fixed = isPositionFixed(anchor);
+export default function(anchor, popup, side = 'bottom', align = 'center', options = {}) {
+  const fixed = !!options.fixed;
   const anchorRect = anchor.getBoundingClientRect();
   const popupStyle = getComputedStyle(popup);
 

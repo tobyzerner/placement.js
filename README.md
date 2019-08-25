@@ -28,8 +28,13 @@ placement(
   anchor, // The HTMLElement to position the popup next to
   popup,  // The HTMLElement of the popup
   side,   // 'top' | 'bottom' | 'left' | 'right'
-  align   // 'start' | 'center' | 'end'
-);
+  align,  // 'start' | 'center' | 'end'
+  options
+)
+
+options = {
+  fixed: false // whether or not the popup should be given position: fixed
+}
 ```
 
 Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see what these parameters do.
