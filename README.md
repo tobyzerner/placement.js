@@ -8,7 +8,7 @@ A tiny library for positioning elements next to other elements. Useful for drop-
 
 **Why not [Popper.js](https://github.com/FezVrasta/popper.js)?** Because 7kb min+gzip just to position a tooltip is too much. Popper.js is powerful and addresses a lot of use-cases, but as a result it is relatively large and can be difficult to configure. When you just need something simple...
 
-**Placement.js** addresses a single use-case: positioning a popup on one side of another element, optimizing the placement depending on the size of the popup:
+**Placement.js** addresses a single use-case: positioning a popup on one side of an anchor, optimizing the placement depending on the size of the popup:
 
 * If the popup is too big, it may swap to the other side if there is more room available.
 * The position and dimensions of the popup will be capped so that it will never go off-screen.
