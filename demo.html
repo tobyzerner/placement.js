@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<style type="text/css">
+  .container {
+    text-align: center;
+    padding: 200px 0;
+  }
+  #anchor {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    box-sizing: border-box;
+  }
+  #popup {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+    box-sizing: border-box;
+    overflow: auto;
+    z-index: 1;
+    background: #fff;
+  }
+  #config {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    border-top: 1px solid black;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+  }
+  #config > div {
+    margin-right: 10px;
+  }
+  label {
+    display: block;
+  }
+  .code {
+    font-family: monospace;
+    font-size: 18px;
+  }
+</style>
+
+<div class="container">
+  <div id="anchor">Anchor</div>
+</div>
+
+<div id="popup">
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+  Popup with scrollable content<br>
+</div>
+
+<div id="config">
+  <div class="code">
+    placement(anchor, popup,
+    <select id="side">
+      <option>top</option>
+      <option selected>bottom</option>
+      <option>left</option>
+      <option>right</option>
+    </select>,
+    <select id="align">
+      <option selected>start</option>
+      <option>center</option>
+      <option>end</option>
+    </select>)
+  </div>
+
+  <div>
+    <label>Anchor width:</label>
+    <input type="range" id="anchorWidth" min="10" max="1000" value="100">
+  </div>
+
+  <div>
+    <label>Anchor height:</label>
+    <input type="range" id="anchorHeight" min="10" max="1000" value="50">
+  </div>
+
+  <div>
+    <label>Popup width:</label>
+    <input type="range" id="popupWidth" min="10" max="1000" value="200">
+  </div>
+
+  <div>
+    <label>Popup height:</label>
+    <input type="range" id="popupHeight" min="10" max="1000" value="100">
+  </div>
+</div>
+
+<script src="index.iife.js"></script>
+
+<script>
+  var anchor = document.getElementById('anchor');
+  var popup = document.getElementById('popup');
+
+  var side = document.getElementById('side');
+  var align = document.getElementById('align');
+  var anchorWidth = document.getElementById('anchorWidth');
+  var anchorHeight = document.getElementById('anchorHeight');
+  var popupWidth = document.getElementById('popupWidth');
+  var popupHeight = document.getElementById('popupHeight');
+
+  function update() {
+    anchor.style.width = anchorWidth.value + 'px';
+    anchor.style.height = anchorHeight.value + 'px';
+
+    popup.style.width = popupWidth.value + 'px';
+    popup.style.height = popupHeight.value + 'px';
+
+    // This is where the magic happens!
+    placement(
+      anchor,
+      popup,
+      side.value,
+      align.value
+    );
+  }
+
+  [side, align, anchorWidth, anchorHeight, popupWidth, popupHeight]
+    .forEach(elm => elm.addEventListener('input', update));
+
+  window.addEventListener('resize', update);
+
+  update();
+</script>
+
+</body>
+</html>

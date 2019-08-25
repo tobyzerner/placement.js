@@ -1,0 +1,28 @@
+{
+  "name": "placement.js",
+  "version": "1.0.0-beta.1",
+  "description": "Place an element next to another element.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobyzerner/placement.js.git"
+  },
+  "author": "Toby Zerner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tobyzerner/placement.js/issues"
+  },
+  "homepage": "https://github.com/tobyzerner/placement.js#readme",
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "devDependencies": {
+    "rollup": "^1.20.2",
+    "rollup-plugin-terser": "^5.1.1"
+  }
+}
