@@ -2,7 +2,7 @@
 
 A tiny library for positioning elements next to other elements. Useful for drop-downs, tooltips, and popovers.
 
-![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/placement.iife.js?compression=gzip)
+![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/index.iife.js?compression=gzip)
 
 [**Demo**](https://tobyzerner.github.io/placement.js/demo.html)
 
