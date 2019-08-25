@@ -2,9 +2,9 @@
 
 A tiny library for positioning elements next to other elements. Useful for drop-downs, tooltips, and popovers.
 
-![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/dist/placement.iife.js?compression=gzip)
+![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/placement.iife.js?compression=gzip)
 
-[**Demo**](https://tobyzerner.github.io/placement.js)
+[**Demo**](https://tobyzerner.github.io/placement.js/demo.html)
 
 **Why not [Popper.js](https://github.com/FezVrasta/popper.js)?** Because 7kb min+gzip just to position a drop-down or tooltip is too much. Popper.js is powerful and addresses a lot of use-cases, but as a result it is relatively large and can be confusing to configure. Most of the time you just need something simple.
 
@@ -32,7 +32,7 @@ placement(
 );
 ```
 
-Check out the [demo](https://tobyzerner.github.io/placement.js) to see what these parameters do.
+Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see what these parameters do.
 
 ## Contributing
 
@@ -40,4 +40,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/tobyzerner/placement.js/blob/master/LICENSE)
