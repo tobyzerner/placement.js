@@ -2,7 +2,7 @@
   "name": "placement.js",
   "version": "1.0.0-beta.1",
   "description": "A tiny library for positioning elements next to other elements. Useful for drop-downs, tooltips, and popovers.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c"
@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/tobyzerner/placement.js#readme",
   "files": [
-    "index.iife.js",
-    "index.js",
+    "dist/index.min.js",
+    "src/index.js",
     "README.md"
   ],
   "devDependencies": {
