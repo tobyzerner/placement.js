@@ -10,9 +10,20 @@ const NAMES = {
   scrollOffset: ['pageYOffset', 'pageXOffset'],
 };
 
-export default function(anchor, popup, side = 'bottom', align = 'center', options = {}) {
+export default function(anchorRect, popup, side = 'bottom', align = 'center', options = {}) {
   const fixed = !!options.fixed;
-  const anchorRect = anchor.getBoundingClientRect();
+
+  if ('getBoundingClientRect' in anchorRect) {
+    anchorRect = anchorRect.getBoundingClientRect().toJSON();
+  }
+
+  anchorRect = Object.assign({
+    top: anchorRect.bottom,
+    bottom: anchorRect.top,
+    left: anchorRect.right,
+    right: anchorRect.left,
+  }, anchorRect);
+
   const popupStyle = getComputedStyle(popup);
 
   const primary = {};
