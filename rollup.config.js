@@ -1,11 +1,23 @@
+import pkg from './package.json';
+import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'index.js',
-  output: {
-    file: 'index.iife.js',
-    format: 'iife',
-    name: 'placement'
-  },
-  plugins: [ terser() ]
+  input: 'src/index.ts',
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs'
+    },
+    {
+      file: pkg.module,
+      format: 'es'
+    },
+    {
+      file: pkg.unpkg,
+      format: 'iife',
+      name: 'placement'
+    }
+  ],
+  plugins: [ typescript(), terser() ]
 };

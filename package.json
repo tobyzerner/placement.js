@@ -1,11 +1,15 @@
 {
   "name": "placement.js",
   "version": "1.0.0-beta.1",
-  "description": "A tiny library for positioning elements next to other elements. Useful for drop-downs, tooltips, and popovers.",
-  "main": "src/index.js",
+  "description": "A tiny library for positioning overlays. Useful for drop-downs, tooltips, and popovers.",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "unpkg": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:watch": "rollup -cw"
   },
   "repository": {
     "type": "git",
@@ -18,12 +22,15 @@
   },
   "homepage": "https://github.com/tobyzerner/placement.js#readme",
   "files": [
-    "dist/index.min.js",
-    "src/index.js",
-    "README.md"
+    "./dist",
+    "./src",
+    "./README.md"
   ],
   "devDependencies": {
     "rollup": "^1.20.2",
-    "rollup-plugin-terser": "^5.1.1"
+    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-typescript2": "^0.24.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.4"
   }
 }
