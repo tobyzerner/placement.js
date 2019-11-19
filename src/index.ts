@@ -13,7 +13,12 @@ const NAMES = {
 type Side = 'top' | 'bottom' | 'left' | 'right';
 type Align = 'start' | 'center' | 'end';
 type Options = {
-    bound?: HTMLElement | DOMRect | ClientRect
+    bound?: HTMLElement | {
+        top?: number,
+        bottom?: number,
+        left?: number,
+        right?: number
+    }
 };
 
 function normalizeRect(rect: DOMRect | ClientRect): ClientRect {
