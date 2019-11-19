@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/tobyzerner/placement.js#readme",
   "files": [
-    "./dist",
-    "./src",
-    "./README.md"
+    "dist",
+    "src",
+    "README.md"
   ],
   "devDependencies": {
     "rollup": "^1.20.2",
