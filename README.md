@@ -1,6 +1,6 @@
 # Placement.js
 
-A tiny library for positioning overlays. Useful for dropdowns, tooltips, popovers etc.
+> A tiny library for positioning overlays. Useful for dropdowns, tooltips, popovers etc.
 
 ![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/index.iife.js?compression=gzip)
 
@@ -23,7 +23,7 @@ npm install placement.js --save
 
 ## Usage
 
-```js
+```ts
 import placement from 'placement.js';
 
 placement(
