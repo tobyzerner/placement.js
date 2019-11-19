@@ -12,34 +12,35 @@ const NAMES = {
 
 type Side = 'top' | 'bottom' | 'left' | 'right';
 type Align = 'start' | 'center' | 'end';
-type Options = {
-    bound?: HTMLElement | {
-        top?: number,
-        bottom?: number,
-        left?: number,
-        right?: number
-    }
+
+type Coordinates = {
+    top?: number,
+    bottom?: number,
+    left?: number,
+    right?: number
 };
 
-function normalizeRect(rect: DOMRect | ClientRect): ClientRect {
+type Options = {
+    bound?: Element | Range | Coordinates
+};
+
+function normalizeRect(rect: DOMRect | ClientRect): Coordinates {
     return {
         top: rect.top,
         bottom: rect.bottom,
         left: rect.left,
-        right: rect.left,
-        height: rect.height,
-        width: rect.width
+        right: rect.right
     };
 }
 
 export default function(
     overlay: HTMLElement,
-    anchor: HTMLElement | DOMRect | ClientRect,
+    anchor: Element | Range | Coordinates,
     side: Side = 'bottom',
     align: Align = 'center',
     options: Options = {}
 ) {
-    if (anchor instanceof HTMLElement) {
+    if (anchor instanceof Element || anchor instanceof Range) {
         anchor = normalizeRect(anchor.getBoundingClientRect());
     }
 
@@ -58,7 +59,7 @@ export default function(
     };
 
     if (options.bound) {
-        if (options.bound instanceof HTMLElement) {
+        if (options.bound instanceof Element || options.bound instanceof Range) {
             options.bound = normalizeRect(options.bound.getBoundingClientRect());
         }
         Object.assign(boundRect, options.bound);

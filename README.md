@@ -27,16 +27,24 @@ npm install placement.js --save
 import placement from 'placement.js';
 
 placement(
-  overlay, // The HTMLElement of the overlay
-  anchor,  // The HTMLElement or DOMRect to position the overlay next to
-  side,    // 'top' | 'bottom' | 'left' | 'right'
-  align,   // 'start' | 'center' | 'end'
-  options
-)
+    overlay: HTMLElement,
+    anchor: Element | Range | Coordinates,
+    side: 'top' | 'bottom' | 'left' | 'right',
+    align: 'start' | 'center' | 'end',
+    options?: Options
+);
 
-options = {
-  bound // An HTMLElement or DOMRect to constrain the overlay position
-}
+type Coordinates = {
+    top?: number,
+    bottom?: number,
+    left?: number,
+    right?: number
+};
+
+type Options = {
+    // Constrain the overlay position
+    bound?: Element | Range | Coordinates
+};
 ```
 
 Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see what these parameters do.
