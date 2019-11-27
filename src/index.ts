@@ -83,8 +83,9 @@ export default function(
     const secondaryMarginAfter = parseInt(overlayStyle[secondary.marginAfter]);
     const secondaryMargin = secondaryMarginBefore + secondaryMarginAfter;
     const secondaryMaxSize = boundRect[secondary.after] - boundRect[secondary.before] - secondaryMargin;
+    const styledSecondaryMaxSize = parseInt(overlayStyle[secondary.maxSize]);
 
-    if (overlay[secondary.offsetSize] > secondaryMaxSize) {
+    if (! styledSecondaryMaxSize || secondaryMaxSize < styledSecondaryMaxSize) {
         overlay.style[secondary.maxSize] = secondaryMaxSize + 'px';
     }
 
@@ -102,10 +103,11 @@ export default function(
 
     // If the size of the popup exceeds the room available on this side, then
     // we will give the popup an explicit size so that it doesn't go off-screen.
-    const maxSize = side === primary.before ? roomBefore : roomAfter;
+    const primaryMaxSize = side === primary.before ? roomBefore : roomAfter;
+    const styledPrimaryMaxSize = parseInt(overlayStyle[primary.maxSize]);
 
-    if (overlay[primary.offsetSize] > maxSize) {
-        overlay.style[primary.maxSize] = maxSize + 'px';
+    if (! styledPrimaryMaxSize || primaryMaxSize < styledPrimaryMaxSize) {
+        overlay.style[primary.maxSize] = primaryMaxSize + 'px';
     }
 
     // Set the position of the popup element along the primary axis using the
