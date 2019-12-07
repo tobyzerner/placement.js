@@ -113,20 +113,27 @@ export default function(
     // Set the position of the popup element along the primary axis using the
     // anchor's bounding rect. If we are working in the context of position:
     // absolute, then we will need to add the window's scroll position as well.
-    const scrollOffset = window[primary.scrollOffset];
+    const scrollOffset = window[primary.scrollOffset] as unknown as number;
+
+    const boundPrimaryPos = pos => {
+        return Math.max(
+            boundRect[primary.before],
+            Math.min(pos, boundRect[primary.after] - overlay[primary.offsetSize] - margin)
+        );
+    };
 
     if (side === primary.before) { // top or left
-        overlay.style[primary.before] = (scrollOffset + anchorRect[primary.before] - overlay[primary.offsetSize] - margin) + 'px';
+        overlay.style[primary.before] = (scrollOffset + boundPrimaryPos(anchorRect[primary.before] - overlay[primary.offsetSize] - margin)) + 'px';
         overlay.style[primary.after] = 'auto';
     } else { // bottom or right
-        overlay.style[primary.before] = (scrollOffset + anchorRect[primary.after]) + 'px';
+        overlay.style[primary.before] = (scrollOffset + boundPrimaryPos(anchorRect[primary.after])) + 'px';
         overlay.style[primary.after] = 'auto';
     }
 
     // Set the position of the popup element along the secondary axis.
     const secondaryScrollOffset = window[secondary.scrollOffset] as unknown as number;
 
-    const boundPos = pos => {
+    const boundSecondaryPos = pos => {
         return Math.max(
             boundRect[secondary.before],
             Math.min(pos, boundRect[secondary.after] - overlay[secondary.offsetSize] - secondaryMargin)
@@ -135,18 +142,18 @@ export default function(
 
     switch (align) {
         case 'start':
-            overlay.style[secondary.before] = (secondaryScrollOffset + boundPos(anchorRect[secondary.before] - secondaryMarginBefore)) + 'px';
+            overlay.style[secondary.before] = (secondaryScrollOffset + boundSecondaryPos(anchorRect[secondary.before] - secondaryMarginBefore)) + 'px';
             overlay.style[secondary.after] = 'auto';
             break;
 
         case 'end':
             overlay.style[secondary.before] = 'auto';
-            overlay.style[secondary.after] = (secondaryScrollOffset + boundPos(document.documentElement[secondary.clientSize] - anchorRect[secondary.after] - secondaryMarginAfter)) + 'px';
+            overlay.style[secondary.after] = (secondaryScrollOffset + boundSecondaryPos(document.documentElement[secondary.clientSize] - anchorRect[secondary.after] - secondaryMarginAfter)) + 'px';
             break;
 
         default: // center
             const anchorSize = anchorRect[secondary.after] - anchorRect[secondary.before];
-            overlay.style[secondary.before] = (secondaryScrollOffset + boundPos(anchorRect[secondary.before] + anchorSize / 2 - overlay[secondary.offsetSize] / 2 - secondaryMarginBefore)) + 'px';
+            overlay.style[secondary.before] = (secondaryScrollOffset + boundSecondaryPos(anchorRect[secondary.before] + anchorSize / 2 - overlay[secondary.offsetSize] / 2 - secondaryMarginBefore)) + 'px';
             overlay.style[secondary.after] = 'auto';
     }
 
