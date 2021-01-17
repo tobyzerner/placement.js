@@ -2,7 +2,7 @@
 
 > A tiny library for positioning overlays. Useful for dropdowns, tooltips, popovers etc.
 
-![Size](https://badge-size.now.sh/https://unpkg.com/placement.js/index.iife.js?compression=gzip)
+![Size](https://img.shields.io/bundlephobia/minzip/placement.js)
 
 [**Demo**](https://tobyzerner.github.io/placement.js/demo.html)
 
