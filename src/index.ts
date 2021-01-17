@@ -51,11 +51,12 @@ export default function(
         right: anchor.left,
     }, anchor);
 
+    const visualViewport = (window as any).visualViewport;
     const boundRect = {
         top: 0,
         left: 0,
-        bottom: window.innerHeight,
-        right: window.innerWidth
+        bottom: visualViewport ? visualViewport.height : window.innerHeight,
+        right: visualViewport ? visualViewport.width : window.innerWidth
     };
 
     if (options.bound) {
