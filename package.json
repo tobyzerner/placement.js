@@ -1,6 +1,6 @@
 {
   "name": "placement.js",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "A tiny library for positioning overlays. Useful for drop-downs, tooltips, and popovers.",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
