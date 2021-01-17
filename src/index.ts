@@ -21,7 +21,8 @@ type Coordinates = {
 };
 
 type Options = {
-    bound?: Element | Range | Coordinates
+    bound?: Element | Range | Coordinates,
+    fixed?: boolean
 };
 
 function normalizeRect(rect: DOMRect | ClientRect): Coordinates {
@@ -75,7 +76,7 @@ export default function(
         secondary[key] = NAMES[key][side === 'top' || side === 'bottom' ? 1 : 0];
     }
 
-    overlay.style.position = 'absolute';
+    overlay.style.position = options.fixed ? 'fixed' : 'absolute';
     overlay.style.maxWidth = '';
     overlay.style.maxHeight = '';
 
@@ -114,7 +115,7 @@ export default function(
     // Set the position of the popup element along the primary axis using the
     // anchor's bounding rect. If we are working in the context of position:
     // absolute, then we will need to add the window's scroll position as well.
-    const scrollOffset = window[primary.scrollOffset] as unknown as number;
+    const scrollOffset = options.fixed ? 0 : window[primary.scrollOffset] as unknown as number;
 
     const boundPrimaryPos = pos => {
         return Math.max(
@@ -132,7 +133,7 @@ export default function(
     }
 
     // Set the position of the popup element along the secondary axis.
-    const secondaryScrollOffset = window[secondary.scrollOffset] as unknown as number;
+    const secondaryScrollOffset = options.fixed ? 0 : window[secondary.scrollOffset] as unknown as number;
 
     const boundSecondaryPos = pos => {
         return Math.max(

@@ -8,6 +8,7 @@ declare type Coordinates = {
 };
 declare type Options = {
     bound?: Element | Range | Coordinates;
+    fixed?: boolean;
 };
 export default function (overlay: HTMLElement, anchor: Element | Range | Coordinates, side?: Side, align?: Align, options?: Options): void;
 export {};

@@ -42,8 +42,11 @@ type Coordinates = {
 };
 
 type Options = {
-    // Constrain the overlay position
-    bound?: Element | Range | Coordinates
+    // Constrain the overlay position (defaults to the viewport)
+    bound?: Element | Range | Coordinates,
+
+    // Use fixed positioning instead of absolute
+    fixed?: boolean
 };
 ```
 
