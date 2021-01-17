@@ -24,7 +24,8 @@
   "files": [
     "dist",
     "src",
-    "README.md"
+    "README.md",
+    "!**/.DS_Store"
   ],
   "devDependencies": {
     "rollup": "^2.36.2",
