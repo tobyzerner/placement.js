@@ -6,7 +6,7 @@
     "module": "es6",
     "noImplicitAny": false,
     "outDir": "./dist",
-    "target": "es5",
+    "target": "es6",
     "esModuleInterop": true
   },
   "include": [

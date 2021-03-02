@@ -1,14 +1,6 @@
-declare type Side = 'top' | 'bottom' | 'left' | 'right';
-declare type Align = 'start' | 'center' | 'end';
-declare type Coordinates = {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
-};
 declare type Options = {
-    bound?: Element | Range | Coordinates;
-    fixed?: boolean;
+    placement?: Placement;
 };
-export default function (overlay: HTMLElement, anchor: Element | Range | Coordinates, side?: Side, align?: Align, options?: Options): void;
+declare type Placement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'right' | 'right-start' | 'right-end' | 'left' | 'left-start' | 'left-end';
+export declare function place(anchor: HTMLElement, overlay: HTMLElement, options: Options): void;
 export {};

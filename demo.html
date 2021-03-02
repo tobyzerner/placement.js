@@ -3,44 +3,72 @@
 <body>
 
 <style type="text/css">
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 120%;
+  }
+
   .container {
+    box-sizing: border-box;
     text-align: center;
     padding: 200px 0;
   }
+
   #anchor {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    cursor: move;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 10px 20px;
     background: #000;
     color: #fff;
     box-sizing: border-box;
   }
+
   #overlay {
-    padding: 10px;
-    border: 1px solid black;
-    margin: 5px;
+    padding: 20px;
+    border: 3px solid black;
     box-sizing: border-box;
     overflow: auto;
     z-index: 1;
     background: #fff;
-  }
-  #config {
-    position: fixed;
-    bottom: 0;
-    padding: 10px;
-    border-top: 1px solid black;
-    left: 0;
-    right: 0;
-    display: flex;
+    resize: both;
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
   }
-  #config > div {
-    margin-right: 10px;
+
+  #config {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    border: 3px solid black;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
   }
+
+  #config select {
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    background: #ddd;
+  }
+
+  #config > * + * {
+    margin-top: 10px;
+  }
+
   label {
     display: block;
   }
+
   .code {
     font-family: monospace;
     font-size: 18px;
@@ -52,121 +80,71 @@
 </div>
 
 <div id="overlay">
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
-  Overlay with scrollable content<br>
+  Overlay
 </div>
 
 <div id="config">
   <div class="code">
-    placement(overlay, anchor,
-    <select id="side">
+    placement(anchor, overlay, {<br>
+    &nbsp;&nbsp;placement:
+    <select id="placement">
       <option>top</option>
+      <option>top-start</option>
+      <option>top-end</option>
       <option selected>bottom</option>
+      <option>bottom-start</option>
+      <option>bottom-end</option>
       <option>left</option>
+      <option>left-start</option>
+      <option>left-end</option>
       <option>right</option>
-    </select>,
-    <select id="align">
-      <option selected>start</option>
-      <option>center</option>
-      <option>end</option>
-    </select>)
-  </div>
-
-  <div>
-    <label>Anchor width:</label>
-    <input type="range" id="anchorWidth" min="10" max="1000" value="100">
-  </div>
-
-  <div>
-    <label>Anchor height:</label>
-    <input type="range" id="anchorHeight" min="10" max="1000" value="50">
-  </div>
-
-  <div>
-    <label>Overlay width:</label>
-    <input type="range" id="overlayWidth" min="10" max="1000" value="200">
-  </div>
-
-  <div>
-    <label>Overlay height:</label>
-    <input type="range" id="overlayHeight" min="10" max="1000" value="100">
+      <option>right-start</option>
+      <option>right-end</option>
+    </select><br>})
   </div>
 </div>
 
 <script src="dist/index.js"></script>
 
 <script>
-  var anchor = document.getElementById('anchor');
-  var overlay = document.getElementById('overlay');
+  const anchor = document.getElementById('anchor');
+  const overlay = document.getElementById('overlay');
+  const placementSelect = document.getElementById('placement');
 
-  var side = document.getElementById('side');
-  var align = document.getElementById('align');
-  var anchorWidth = document.getElementById('anchorWidth');
-  var anchorHeight = document.getElementById('anchorHeight');
-  var overlayWidth = document.getElementById('overlayWidth');
-  var overlayHeight = document.getElementById('overlayHeight');
+  let anchorStart;
+  let mouseStart;
 
-  function update() {
-    anchor.style.width = anchorWidth.value + 'px';
-    anchor.style.height = anchorHeight.value + 'px';
-
-    overlay.style.width = overlayWidth.value + 'px';
-    overlay.style.height = overlayHeight.value + 'px';
-
-    // This is where the magic happens!
-    placement(
-      overlay,
-      anchor,
-      side.value,
-      align.value
-    );
+  function mouseMove(e) {
+    anchor.style.left = (anchorStart[0] + (e.clientX - mouseStart[0])) + 'px';
+    anchor.style.top = (anchorStart[1] + (e.clientY - mouseStart[1])) + 'px';
+    update();
   }
 
-  [side, align, anchorWidth, anchorHeight, overlayWidth, overlayHeight]
-    .forEach(elm => elm.addEventListener('input', update));
+  anchor.addEventListener('mousedown', e => {
+    anchorStart = [anchor.offsetLeft, anchor.offsetTop];
+    mouseStart = [e.clientX, e.clientY];
+    document.addEventListener('mousemove', mouseMove);
+  });
 
+  document.addEventListener('mouseup', () => {
+    document.removeEventListener('mousemove', mouseMove);
+  });
+
+  const resizeObserver = new ResizeObserver(() => update());
+  resizeObserver.observe(overlay);
+
+  placementSelect.addEventListener('input', update);
   window.addEventListener('resize', update);
-
   update();
+
+  function update() {
+    // This is where the magic happens!
+    placement.place(
+      anchor,
+      overlay,
+      { placement: placementSelect.value }
+    );
+  }
 </script>
 
 </body>

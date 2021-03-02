@@ -1,14 +1,14 @@
 import pkg from './package.json';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
+import filesize from 'rollup-plugin-filesize';
 
 export default {
   input: 'src/index.ts',
   output: [
     {
       file: pkg.main,
-      format: 'cjs',
-      exports: 'default'
+      format: 'cjs'
     },
     {
       file: pkg.module,
@@ -20,5 +20,5 @@ export default {
       name: 'placement'
     }
   ],
-  plugins: [ typescript(), terser() ]
+  plugins: [ typescript(), terser(), filesize() ]
 };

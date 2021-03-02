@@ -1,19 +1,19 @@
 # Placement.js
 
-> A tiny library for positioning overlays. Useful for dropdowns, tooltips, popovers etc.
+> A tiny library for positioning overlays. Useful for tooltips, popovers etc.
 
 ![Size](https://img.shields.io/bundlephobia/minzip/placement.js)
 
 [**Demo**](https://tobyzerner.github.io/placement.js/demo.html)
 
-**Why?** Positioning UI overlays like dropdown menus and tooltips can be challenging. If you position them with CSS, then at some stage you are likely to run into problems with z-indices, parent overflows, or content going off the edge of the screen. Ideally overlays should be appended to the `<body>`, but then they need to be absolutely positioned, taking into account the viewport edges and content size.
-
-**Why not [Popper.js](https://github.com/FezVrasta/popper.js)?** Because 7kb min+gzip just to position a tooltip is too much. Popper.js is powerful and addresses a lot of use-cases, but as a result it is relatively large and can be difficult to configure. When you just need something simple...
+**Why?** Positioning UI overlays like popovers and tooltips can be challenging. If you position them with CSS, then at some stage you are likely to run into problems with z-indices, parent overflows, or content going off the edge of the screen. JavaScript to the rescue!
 
 **Placement.js** addresses a single use-case: positioning an overlay to one side of an anchor element, optimizing the placement depending on the size of the overlay:
 
-* If the overlay is too big, it may swap to the other side if there is more room available.
-* The position and dimensions of the overlay will be capped so that it will never go off-screen.
+* If the overlay is too big, it may **flip** to the other side if there is more room available.
+* The dimensions of the overlay will be **capped** so that it will never go off-screen.
+
+Small filesize is a priority for Placement.js so that it can be included in web components. For a more powerful, configurable library, check out [Popper.js](https://popper.js.org).
 
 ## Installation
 
@@ -24,47 +24,34 @@ npm install placement.js --save
 ## Usage
 
 ```ts
-import placement from 'placement.js';
+import { place } from 'placement.js';
 
-placement(
+place(
+    anchor: HTMLElement,
     overlay: HTMLElement,
-    anchor: Element | Range | Coordinates,
-    side: 'top' | 'bottom' | 'left' | 'right',
-    align: 'start' | 'center' | 'end',
     options?: Options
 );
 
-type Coordinates = {
-    top?: number,
-    bottom?: number,
-    left?: number,
-    right?: number
-};
-
 type Options = {
-    // Constrain the overlay position (defaults to the viewport)
-    bound?: Element | Range | Coordinates,
-
-    // Use fixed positioning instead of absolute
-    fixed?: boolean
+    placement?: Placement // defaults to 'bottom'
 };
+
+type Placement =
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end';
 ```
 
-Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see what these parameters do.
-
-### FAQ
-
-#### My overlay isn't being positioned correctly. What gives?
-
-When calculating the overlay position, Placement.js does not account for positioned ancestors (ie. containing elements with a position of `relative`, `absolute`, or `fixed`), because it would add extra complexity. Instead, you should change your DOM so that your overlay is appended directly onto the document body.
-
-#### How do I update the position of the popup when things move (anchor position, window scroll, resize, etc)?
-
-Placement.js purposely doesn't handle this for you. You can consider the following options:
-
-* **Prevent this from happening in the first place.** For example, while a dropdown menu is open, scrolling the entire page doesn't have much utility. So just disable scrolling when a menu is open by applying `overflow: hidden` to the body and then you won't need to worry about the position.
-* **Hide the overlay.** For example, if you scroll the page while you've got your mouse over an element showing a tooltip, then you should just hide the tooltip rather than trying to update its position.
-* **Listen for these events yourself** and call `placement` again with the same parameters. The [demo](https://tobyzerner.github.io/placement.js/demo.html) is an example of this.
+Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see it in action.
 
 ## Contributing
 
