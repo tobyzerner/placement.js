@@ -8,7 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
-    "build:watch": "rollup -cw"
+    "build:watch": "rollup -cw",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,26 @@
   ],
   "sideEffects": false,
   "devDependencies": {
+    "@release-it/keep-a-changelog": "^2.2.2",
     "@rollup/plugin-typescript": "^8.1.0",
+    "release-it": "^14.6.1",
     "rollup": "^2.36.2",
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.1.0",
     "typescript": "^4.1.3"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/keep-a-changelog": {
+        "filename": "CHANGELOG.md"
+      }
+    },
+    "hooks": {
+      "after:bump": "npm run build"
+    }
   }
 }
