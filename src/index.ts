@@ -1,5 +1,12 @@
-type Options = {
-    placement?: Placement
+export type Options = {
+    placement?: Placement,
+    flip?: boolean,
+    cap?: boolean,
+};
+
+const PROPS = {
+    x: { start: 'left', Start: 'Left', end: 'right', End: 'Right', size: 'width', Size: 'Width' },
+    y: { start: 'top', Start: 'Top', end: 'bottom', End: 'Bottom', size: 'height', Size: 'Height' }
 };
 
 type Placement =
@@ -16,110 +23,96 @@ type Placement =
     | 'left-start'
     | 'left-end';
 
-const PROPS = {
-    x: { start: 'left', Start: 'Left', end: 'right', End: 'Right', size: 'width', Size: 'Width' },
-    y: { start: 'top', Start: 'Top', end: 'bottom', End: 'Bottom', size: 'height', Size: 'Height' }
-};
+type Axis = 'x' | 'y';
 
-export function place(
+export default function(
     anchor: HTMLElement,
     overlay: HTMLElement,
     options: Options
 ) {
-    const placement = options.placement || 'bottom';
-    let [side, align] = placement.split('-');
-
-    const mainAxis = ['top', 'bottom'].includes(side) ? 'y' : 'x';
-    const altAxis = mainAxis === 'y' ? 'x' : 'y';
-    const mainProps = PROPS[mainAxis];
-    const altProps = PROPS[altAxis];
-
-    // Reset the position and uncap the maximum size of the popup so that we
-    // can reliably determine if the popup is "too big" below.
+    // Reset
     const overlayStyle = overlay.style;
-    overlayStyle.position = 'absolute';
-    overlayStyle.maxWidth = overlayStyle.maxHeight = '';
+    Object.assign(overlayStyle, {
+        position: 'absolute',
+        maxWidth: '',
+        maxHeight: ''
+    });
 
-    // Get the rectangles defining the anchor element and the overflow boundary.
-    // To ensure a reliable calculation, this comes after resetting the overlay
-    // position to absolute.
+    let [side = 'bottom', align = 'center'] = options.placement.split('-');
+    const axisSide = ['top', 'bottom'].includes(side) ? 'y' : 'x';
+    let oppositeSide = side === PROPS[axisSide].start ? PROPS[axisSide].end : PROPS[axisSide].start;
+    const axisAlign = axisSide === 'x' ? 'y' : 'x';
     const anchorRect = anchor.getBoundingClientRect();
-    const boundRect = scrollParent(overlay)?.getBoundingClientRect() || createRect(0, 0, window.innerWidth, window.innerHeight);
+    const boundRect = scrollParent(overlay)?.getBoundingClientRect() || new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+    const offsetParent = overlay.offsetParent || document.body;
+    const offsetParentRect = offsetParent === document.body ? new DOMRect(0, -pageYOffset, window.innerWidth, window.innerHeight) : offsetParent.getBoundingClientRect();
+    const offsetParentComputed = getComputedStyle(offsetParent);
+    const overlayComputed = getComputedStyle(overlay);
 
-    // Constrain the maximum size of the popup along the alignment axis.
-    overlayStyle['max' + altProps.Size] = boundRect[altProps.size] + 'px';
+    // Flip
+    if (options.flip || typeof options.flip === 'undefined') {
+        // Calculate the available room on either side of the anchor element. If
+        // the size of the popup is more than is available on the given side, then
+        // we will flip it to the side with more room.
+        const room = side => Math.abs(anchorRect[side] - boundRect[side]);
+        const roomThisSide = room(side);
+        const overlaySize = overlay['offset' + PROPS[axisSide].Size];
 
-    // Calculate the available room on either side of the anchor element. If
-    // the size of the popup is more than is available on the given side, then
-    // we will flip it to the side with more room.
-    const room = {
-        [mainProps.start]: anchorRect[mainProps.start] - boundRect[mainProps.start],
-        [mainProps.end]: boundRect[mainProps.end] - anchorRect[mainProps.end]
-    };
-
-    if (overlay['offset' + mainProps.Size] > room[side]) {
-        side = room[mainProps.start] > room[mainProps.end] ? mainProps.start : mainProps.end;
-    }
-
-    // Constrain the maximum size of the popup along the main axis.
-    overlayStyle['max' + mainProps.Size] = room[side] + 'px';
-
-    let offset;
-    const offsetParent = overlay.offsetParent;
-    if (offsetParent && offsetParent !== document.body) {
-        const parentRect = offsetParent.getBoundingClientRect();
-        const parentStyle = getComputedStyle(offsetParent);
-        offset = axis => parentRect[PROPS[axis].start] + parseInt(parentStyle['border' + PROPS[axis].Start + 'Width']);
-    }
-
-    const pos = (pos, axis) => {
-        return Math.max(
-            boundRect[PROPS[axis].start],
-            Math.min(
-                pos,
-                boundRect[PROPS[axis].end] - overlay['offset' + PROPS[axis].Size]
-            )
-        ) - (offset ? offset(axis) : 0);
-    };
-
-    const dde = document.documentElement;
-
-    // Set the position of the popup along the main axis.
-    if (side === mainProps.start) { // top or left
-        overlayStyle[mainProps.start] = 'auto';
-        overlayStyle[mainProps.end] = pos(dde['client' + mainProps.Size] - anchorRect[mainProps.start], mainAxis) + 'px';
-    } else { // bottom or right
-        overlayStyle[mainProps.start] = pos(anchorRect[mainProps.end], mainAxis) + 'px';
-        overlayStyle[mainProps.end] = 'auto';
-    }
-
-    // Set the position of the popup along the secondary axis.
-    if (align === 'end') {
-        overlayStyle[altProps.start] = 'auto';
-        overlayStyle[altProps.end] = pos(dde['client' + altProps.Size] - anchorRect[altProps.end], altAxis) + 'px';
-    } else {
-        let offset = 0;
-        if (align !== 'start') {
-            const anchorSize = anchorRect[altProps.size];
-            offset = anchorSize / 2 - overlay['offset' + altProps.Size] / 2;
+        if (overlaySize > roomThisSide && room(oppositeSide) > roomThisSide) {
+            [side, oppositeSide] = [oppositeSide, side];
         }
-
-        overlayStyle[altProps.start] = pos(anchorRect[altProps.start] + offset, altAxis) + 'px';
-        overlayStyle[altProps.end] = 'auto';
     }
 
-    overlay.dataset.placement = side + (align ? '-' + align : '');
-}
+    // Data attribute
+    overlay.dataset.placement = `${side}-${align}`;
 
-function createRect(top, left, width, height): ClientRect {
-    return {
-        top,
-        left,
-        right: width,
-        bottom: height,
-        width,
-        height
-    };
+    // Cap
+    if (options.cap || typeof options.cap === 'undefined') {
+        const cap = (axis: Axis, room: number) => {
+            const intrinsicMaxSize = overlayComputed['max' + PROPS[axis].Size];
+            room -= parseInt(overlayComputed['margin' + PROPS[axis].Start]) + parseInt(overlayComputed['margin' + PROPS[axis].End]);
+            if (intrinsicMaxSize === 'none' || room < parseInt(intrinsicMaxSize)) {
+                overlay.style['max' + PROPS[axis].Size] = room + 'px';
+            }
+        };
+
+        cap(axisSide, Math.abs(boundRect[side] - anchorRect[side]));
+        cap(axisAlign, boundRect[PROPS[axisAlign].size]);
+    }
+
+    // Side
+    Object.assign(overlayStyle, {
+        [side]: 'auto',
+        [oppositeSide]: (
+            (side === PROPS[axisSide].start
+                ? offsetParentRect[PROPS[axisSide].end] - anchorRect[PROPS[axisSide].start]
+                : anchorRect[PROPS[axisSide].end] - offsetParentRect[PROPS[axisSide].start])
+            - parseInt(offsetParentComputed['border' + PROPS[axisSide].Start + 'Width'])
+        ) + 'px'
+    });
+
+    // Align
+    const fromAlign = align === 'end' ? 'end' : 'start';
+    const oppositeAlign = align === 'end' ? 'start' : 'end';
+    const anchorAlign = anchorRect[axisAlign] - offsetParentRect[axisAlign];
+    const anchorSize = anchorRect[PROPS[axisAlign].size];
+    const overlaySize = overlay['offset' + PROPS[axisAlign].Size];
+    const factor = align === 'end' ? -1 : 1;
+    Object.assign(overlayStyle, {
+        [PROPS[axisAlign][oppositeAlign]]: 'auto',
+        [PROPS[axisAlign][fromAlign]]: (
+            Math.max(
+                factor * (boundRect[PROPS[axisAlign][fromAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]),
+                Math.min(
+                    align === 'end'
+                        ? offsetParentRect[PROPS[axisAlign].size] - anchorAlign - anchorSize
+                        : anchorAlign + (align !== 'start' ? anchorSize / 2 - overlaySize / 2 : 0),
+                    factor * (boundRect[PROPS[axisAlign][oppositeAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]) - overlaySize
+                )
+            )
+            - parseInt(offsetParentComputed['border' + PROPS[axisAlign].Start + 'Width'])
+        ) + 'px'
+    });
 }
 
 function scrollParent(node) {

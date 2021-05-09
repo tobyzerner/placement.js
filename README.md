@@ -1,6 +1,6 @@
 # Placement.js
 
-> A tiny library for positioning overlays. Useful for tooltips, popovers etc.
+**A tiny library for positioning overlays. Useful for tooltips, popovers etc.**
 
 ![Size](https://img.shields.io/bundlephobia/minzip/placement.js)
 
@@ -24,34 +24,40 @@ npm install placement.js --save
 ## Usage
 
 ```ts
-import { place } from 'placement.js';
+import placement from 'placement.js';
 
-place(
+placement(
     anchor: HTMLElement,
     overlay: HTMLElement,
     options?: Options
 );
 
 type Options = {
-    placement?: Placement // defaults to 'bottom'
+    // The overlay placement relative to the anchor. 
+    // Defaults to 'bottom'.
+    placement?: 
+        | 'top'
+        | 'top-start'
+        | 'top-end'
+        | 'bottom'
+        | 'bottom-start'
+        | 'bottom-end'
+        | 'right'
+        | 'right-start'
+        | 'right-end'
+        | 'left'
+        | 'left-start'
+        | 'left-end',
+
+    // Whether or not the overlay can flip to the other side if there's more
+    // room available. Defaults to true.
+    flip?: boolean,
+
+    // Whether or not the overlay size should be capped to the available space.
+    // Defaults to true.
+    cap?: boolean,
 };
-
-type Placement =
-    | 'top'
-    | 'top-start'
-    | 'top-end'
-    | 'bottom'
-    | 'bottom-start'
-    | 'bottom-end'
-    | 'right'
-    | 'right-start'
-    | 'right-end'
-    | 'left'
-    | 'left-start'
-    | 'left-end';
 ```
-
-Check out the [demo](https://tobyzerner.github.io/placement.js/demo.html) to see it in action.
 
 ## Contributing
 

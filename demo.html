@@ -7,12 +7,18 @@
     margin: 0;
     font-family: sans-serif;
     font-size: 120%;
+    display: flex;
+    height: 100vh;
   }
 
   .container {
     box-sizing: border-box;
-    text-align: center;
-    padding: 200px 0;
+    margin: auto;
+    margin-right: 200px;
+    padding: 20px;
+    width: 400px;
+    height: 400px;
+    border: 3px solid;
   }
 
   #anchor {
@@ -75,12 +81,19 @@
   }
 </style>
 
-<div class="container">
-  <div id="anchor">Anchor</div>
-</div>
+<div class="container" id="container">
+  <label>
+    <input type="checkbox" id="containerRelative">
+    position: relative on container
+  </label>
 
-<div id="overlay">
-  Overlay
+  <label>
+    <input type="checkbox" id="containerOverflow">
+    overflow: auto on container
+  </label>
+  
+  <div id="anchor">Anchor</div>
+  <div id="overlay">Overlay</div>
 </div>
 
 <div id="config">
@@ -94,12 +107,12 @@
       <option selected>bottom</option>
       <option>bottom-start</option>
       <option>bottom-end</option>
-      <option>left</option>
-      <option>left-start</option>
-      <option>left-end</option>
       <option>right</option>
       <option>right-start</option>
       <option>right-end</option>
+      <option>left</option>
+      <option>left-start</option>
+      <option>left-end</option>
     </select><br>})
   </div>
 </div>
@@ -110,6 +123,8 @@
   const anchor = document.getElementById('anchor');
   const overlay = document.getElementById('overlay');
   const placementSelect = document.getElementById('placement');
+  const containerRelative = document.getElementById('containerRelative');
+  const containerOverflow = document.getElementById('containerOverflow');
 
   let anchorStart;
   let mouseStart;
@@ -134,12 +149,17 @@
   resizeObserver.observe(overlay);
 
   placementSelect.addEventListener('input', update);
+  containerRelative.addEventListener('change', update);
+  containerOverflow.addEventListener('change', update);
   window.addEventListener('resize', update);
   update();
 
   function update() {
+    container.style.position = containerRelative.checked ? 'relative' : '';
+    container.style.overflow = containerOverflow.checked ? 'auto' : '';
+
     // This is where the magic happens!
-    placement.place(
+    placement(
       anchor,
       overlay,
       { placement: placementSelect.value }
