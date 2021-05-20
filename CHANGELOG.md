@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0-beta.5] - 2021-05-20
 ### Added
 - New `bound` option to turn off bounding the overlay position to the scroll container.
 
@@ -36,5 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `bound` option.
 - Removed the ability to specify `Coordinates` or `Range` as the anchor.
 
-[Unreleased]: https://github.com/tobyzerner/placement.js/compare/v1.0.0-beta.3...HEAD
+[Unreleased]: https://github.com/tobyzerner/placement.js/compare/v1.0.0-beta.5...HEAD
 [1.0.0-beta.3]: https://github.com/tobyzerner/placement.js/compare/v1.0.0-beta.2...v1.0.0-beta.3
+
+[1.0.0-beta.5]: https://github.com/tobyzerner/placement.js/compare/v1.0.0-beta.4...v1.0.0-beta.5
