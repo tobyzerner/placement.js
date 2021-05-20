@@ -46,7 +46,7 @@ export default function(
     const anchorRect = anchor.getBoundingClientRect();
     const boundRect = scrollParent(overlay)?.getBoundingClientRect() || new DOMRect(0, 0, window.innerWidth, window.innerHeight);
     const offsetParent = overlay.offsetParent || document.body;
-    const offsetParentRect = offsetParent === document.body ? new DOMRect(0, -pageYOffset, window.innerWidth, window.innerHeight) : offsetParent.getBoundingClientRect();
+    const offsetParentRect = offsetParent === document.body ? new DOMRect(-pageXOffset, -pageYOffset, window.innerWidth, window.innerHeight) : offsetParent.getBoundingClientRect();
     const offsetParentComputed = getComputedStyle(offsetParent);
     const overlayComputed = getComputedStyle(overlay);
 
