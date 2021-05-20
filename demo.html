@@ -113,6 +113,21 @@
       <option>left</option>
       <option>left-start</option>
       <option>left-end</option>
+    </select>,<br>
+    &nbsp;&nbsp;flip:
+    <select id="flip">
+      <option>true</option>
+      <option>false</option>
+    </select>,<br>
+    &nbsp;&nbsp;cap:
+    <select id="cap">
+      <option>true</option>
+      <option>false</option>
+    </select>,<br>
+    &nbsp;&nbsp;bound:
+    <select id="bound">
+      <option>true</option>
+      <option>false</option>
     </select><br>})
   </div>
 </div>
@@ -123,6 +138,9 @@
   const anchor = document.getElementById('anchor');
   const overlay = document.getElementById('overlay');
   const placementSelect = document.getElementById('placement');
+  const flip = document.getElementById('flip');
+  const cap = document.getElementById('cap');
+  const bound = document.getElementById('bound');
   const containerRelative = document.getElementById('containerRelative');
   const containerOverflow = document.getElementById('containerOverflow');
 
@@ -149,6 +167,9 @@
   resizeObserver.observe(overlay);
 
   placementSelect.addEventListener('input', update);
+  flip.addEventListener('input', update);
+  cap.addEventListener('input', update);
+  bound.addEventListener('input', update);
   containerRelative.addEventListener('change', update);
   containerOverflow.addEventListener('change', update);
   window.addEventListener('resize', update);
@@ -162,7 +183,12 @@
     placement(
       anchor,
       overlay,
-      { placement: placementSelect.value }
+      {
+        placement: placementSelect.value,
+        flip: flip.value === 'true',
+        cap: cap.value === 'true',
+        bound: bound.value === 'true',
+      }
     );
   }
 </script>

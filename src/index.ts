@@ -2,6 +2,7 @@ export type Options = {
     placement?: Placement,
     flip?: boolean,
     cap?: boolean,
+    bound?: boolean,
 };
 
 const PROPS = {
@@ -97,20 +98,26 @@ export default function(
     const anchorAlign = anchorRect[axisAlign] - offsetParentRect[axisAlign];
     const anchorSize = anchorRect[PROPS[axisAlign].size];
     const overlaySize = overlay['offset' + PROPS[axisAlign].Size];
-    const factor = align === 'end' ? -1 : 1;
+
+    let alignPos = align === 'end'
+        ? offsetParentRect[PROPS[axisAlign].size] - anchorAlign - anchorSize
+        : anchorAlign + (align !== 'start' ? anchorSize / 2 - overlaySize / 2 : 0);
+
+    if (options.bound || typeof options.bound === 'undefined') {
+        const factor = align === 'end' ? -1 : 1;
+        alignPos = Math.max(
+            factor * (boundRect[PROPS[axisAlign][fromAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]),
+            Math.min(
+                alignPos,
+                factor * (boundRect[PROPS[axisAlign][oppositeAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]) - overlaySize
+            )
+        );
+    }
+
     Object.assign(overlayStyle, {
         [PROPS[axisAlign][oppositeAlign]]: 'auto',
         [PROPS[axisAlign][fromAlign]]: (
-            Math.max(
-                factor * (boundRect[PROPS[axisAlign][fromAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]),
-                Math.min(
-                    align === 'end'
-                        ? offsetParentRect[PROPS[axisAlign].size] - anchorAlign - anchorSize
-                        : anchorAlign + (align !== 'start' ? anchorSize / 2 - overlaySize / 2 : 0),
-                    factor * (boundRect[PROPS[axisAlign][oppositeAlign]] - offsetParentRect[PROPS[axisAlign][fromAlign]]) - overlaySize
-                )
-            )
-            - parseInt(offsetParentComputed['border' + PROPS[axisAlign].Start + 'Width'])
+            alignPos - parseInt(offsetParentComputed['border' + PROPS[axisAlign].Start + 'Width'])
         ) + 'px'
     });
 }

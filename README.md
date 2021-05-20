@@ -56,6 +56,10 @@ type Options = {
     // Whether or not the overlay size should be capped to the available space.
     // Defaults to true.
     cap?: boolean,
+
+    // Whether or not the overlay position should be bound to the scroll 
+    // container. Defaults to true.
+    bound?: boolean,
 };
 ```
 
