@@ -2,6 +2,8 @@
 
 **A tiny library for positioning overlays. Useful for tooltips, popovers etc.**
 
+⚠️ The project is no longer maintained. Prefer [Floating UI](https://floating-ui.com), which is lightweight and much more capable.
+
 ![Size](https://img.shields.io/bundlephobia/minzip/placement.js)
 
 [**Demo**](https://tobyzerner.github.io/placement.js/demo.html)
